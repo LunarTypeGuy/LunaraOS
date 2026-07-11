@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<style>
+
+:root {
+  --color-brand-primary: #232425;
+  --color-brand-secondary: #0F7FFF;
+  --color-bg-page: #FFFFFF;
+  --color-bg-surface: #FAFAFA;
+  --color-bg-subtle: #F5F5F5;
+  --color-text-primary: #232425;
+  --color-text-secondary: #606366;
+  --color-text-tertiary: #909499;
+  --color-text-disabled: #C4C7CC;
+  --color-text-link: #0F7FFF;
+  --color-text-on-brand: #FFFFFF;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+  --color-border-default: #EAEAEA;
+  --color-border-strong: #D0D3D8;
+  --color-border-subtle: #F2F2F2;
+  --color-border-brand: #0F7FFF;
+  --color-border-error: #EF4444;
+  --color-border-success: #10B981;
+  --space-4: 4px; --space-8: 8px; --space-12: 12px; --space-16: 16px;
+  --space-20: 20px; --space-24: 24px; --space-32: 32px; --space-48: 48px;
+  --text-h1: 36px; --text-h2: 28px; --text-h3: 22px; --text-h4: 18px;
+  --text-body: 16px; --text-small: 14px; --text-caption: 12px;
+  --radius-4: 4px; --radius-8: 8px; --radius-12: 12px;
+  --border-width-1: 1px; --border-width-2: 2px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+
+  /* Categorical color ramps (mirror of design-tokens.css) */
+  --color-cat-blue-50:#EBF3FE;--color-cat-blue-100:#C5DDFC;--color-cat-blue-200:#92BEF8;--color-cat-blue-400:#0F7FFF;--color-cat-blue-600:#0561C5;--color-cat-blue-800:#053F7C;--color-cat-blue-900:#06294F;
+  --color-cat-green-50:#E5F8F1;--color-cat-green-100:#B7EFD8;--color-cat-green-200:#7DE0BA;--color-cat-green-400:#10B981;--color-cat-green-600:#088762;--color-cat-green-800:#045A41;--color-cat-green-900:#023A29;
+  --color-cat-amber-50:#FEF3D9;--color-cat-amber-100:#FCE0A0;--color-cat-amber-200:#FAC865;--color-cat-amber-400:#F59E0B;--color-cat-amber-600:#B16E03;--color-cat-amber-800:#6E4500;--color-cat-amber-900:#422900;
+  --color-cat-red-50:#FDE9E9;--color-cat-red-100:#F9C2C2;--color-cat-red-200:#F49595;--color-cat-red-400:#EF4444;--color-cat-red-600:#C41B1B;--color-cat-red-800:#821212;--color-cat-red-900:#520B0B;
+  --color-cat-purple-50:#F0EAFE;--color-cat-purple-100:#D5C2FB;--color-cat-purple-200:#B59AF8;--color-cat-purple-400:#8B5CF6;--color-cat-purple-600:#6431D2;--color-cat-purple-800:#441E8E;--color-cat-purple-900:#2A1259;
+  --color-cat-teal-50:#DEF7F4;--color-cat-teal-100:#A6EBE2;--color-cat-teal-200:#6BDCCD;--color-cat-teal-400:#14B8A6;--color-cat-teal-600:#0D8779;--color-cat-teal-800:#075A50;--color-cat-teal-900:#043934;
+  --color-cat-coral-50:#FEE7EB;--color-cat-coral-100:#FCC0CA;--color-cat-coral-200:#FA98A8;--color-cat-coral-400:#FB7185;--color-cat-coral-600:#D14258;--color-cat-coral-800:#8C2336;--color-cat-coral-900:#5A111F;
+  --color-cat-pink-50:#FCE4F1;--color-cat-pink-100:#F7BAD9;--color-cat-pink-200:#F18BBE;--color-cat-pink-400:#EC4899;--color-cat-pink-600:#B81F75;--color-cat-pink-800:#7B0F4D;--color-cat-pink-900:#4D0530;
+  --color-cat-gray-50:#F3F4F6;--color-cat-gray-100:#E5E7EB;--color-cat-gray-200:#CBD0D7;--color-cat-gray-400:#6B7280;--color-cat-gray-600:#4A4F58;--color-cat-gray-800:#2A2D33;--color-cat-gray-900:#16181B;
+}
+.c-blue   { fill: var(--color-cat-blue-50);   stroke: var(--color-cat-blue-600);   color: var(--color-cat-blue-800);   background-color: var(--color-cat-blue-50);   border-color: var(--color-cat-blue-600); }
+.c-green  { fill: var(--color-cat-green-50);  stroke: var(--color-cat-green-600);  color: var(--color-cat-green-800);  background-color: var(--color-cat-green-50);  border-color: var(--color-cat-green-600); }
+.c-amber  { fill: var(--color-cat-amber-50);  stroke: var(--color-cat-amber-600);  color: var(--color-cat-amber-800);  background-color: var(--color-cat-amber-50);  border-color: var(--color-cat-amber-600); }
+.c-red    { fill: var(--color-cat-red-50);    stroke: var(--color-cat-red-600);    color: var(--color-cat-red-800);    background-color: var(--color-cat-red-50);    border-color: var(--color-cat-red-600); }
+.c-purple { fill: var(--color-cat-purple-50); stroke: var(--color-cat-purple-600); color: var(--color-cat-purple-800); background-color: var(--color-cat-purple-50); border-color: var(--color-cat-purple-600); }
+.c-teal   { fill: var(--color-cat-teal-50);   stroke: var(--color-cat-teal-600);   color: var(--color-cat-teal-800);   background-color: var(--color-cat-teal-50);   border-color: var(--color-cat-teal-600); }
+.c-coral  { fill: var(--color-cat-coral-50);  stroke: var(--color-cat-coral-600);  color: var(--color-cat-coral-800);  background-color: var(--color-cat-coral-50);  border-color: var(--color-cat-coral-600); }
+.c-pink   { fill: var(--color-cat-pink-50);   stroke: var(--color-cat-pink-600);   color: var(--color-cat-pink-800);   background-color: var(--color-cat-pink-50);   border-color: var(--color-cat-pink-600); }
+.c-gray   { fill: var(--color-cat-gray-50);   stroke: var(--color-cat-gray-600);   color: var(--color-cat-gray-800);   background-color: var(--color-cat-gray-50);   border-color: var(--color-cat-gray-600); }
+.c-blue text, .c-green text, .c-amber text, .c-red text,
+.c-purple text, .c-teal text, .c-coral text, .c-pink text, .c-gray text { fill: currentColor; stroke: none; }
+@media (prefers-color-scheme: dark) {
+  :root {
+  --color-brand-primary: #E8E9EA;
+  --color-brand-secondary: #4a9eff;
+  --color-bg-page: #1A1B1C;
+  --color-bg-surface: #232425;
+  --color-bg-subtle: #2A2B2C;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B8BBBF;
+  --color-text-tertiary: #868B92;
+  --color-text-disabled: #4A4C4F;
+  --color-text-link: #8bb8ff;
+  --color-text-on-brand: #1A1B1C;
+  --color-border-default: #3A3B3C;
+  --color-border-strong: #4A4C4F;
+  --color-border-subtle: #2E2F30;
+  --color-border-brand: #4a9eff;
+  --color-border-error: #f87171;
+  --color-border-success: #34d399;
+  }
+  .c-blue { fill: var(--color-cat-blue-800); stroke: var(--color-cat-blue-200); color: var(--color-cat-blue-100); background-color: var(--color-cat-blue-800); border-color: var(--color-cat-blue-200); }
+  .c-green { fill: var(--color-cat-green-800); stroke: var(--color-cat-green-200); color: var(--color-cat-green-100); background-color: var(--color-cat-green-800); border-color: var(--color-cat-green-200); }
+  .c-amber { fill: var(--color-cat-amber-800); stroke: var(--color-cat-amber-200); color: var(--color-cat-amber-100); background-color: var(--color-cat-amber-800); border-color: var(--color-cat-amber-200); }
+  .c-red { fill: var(--color-cat-red-800); stroke: var(--color-cat-red-200); color: var(--color-cat-red-100); background-color: var(--color-cat-red-800); border-color: var(--color-cat-red-200); }
+  .c-purple { fill: var(--color-cat-purple-800); stroke: var(--color-cat-purple-200); color: var(--color-cat-purple-100); background-color: var(--color-cat-purple-800); border-color: var(--color-cat-purple-200); }
+  .c-teal { fill: var(--color-cat-teal-800); stroke: var(--color-cat-teal-200); color: var(--color-cat-teal-100); background-color: var(--color-cat-teal-800); border-color: var(--color-cat-teal-200); }
+  .c-coral { fill: var(--color-cat-coral-800); stroke: var(--color-cat-coral-200); color: var(--color-cat-coral-100); background-color: var(--color-cat-coral-800); border-color: var(--color-cat-coral-200); }
+  .c-pink { fill: var(--color-cat-pink-800); stroke: var(--color-cat-pink-200); color: var(--color-cat-pink-100); background-color: var(--color-cat-pink-800); border-color: var(--color-cat-pink-200); }
+  .c-gray { fill: var(--color-cat-gray-800); stroke: var(--color-cat-gray-200); color: var(--color-cat-gray-100); background-color: var(--color-cat-gray-800); border-color: var(--color-cat-gray-200); }
+}
+html[data-theme="dark"] {
+  --color-brand-primary: #E8E9EA;
+  --color-brand-secondary: #4a9eff;
+  --color-bg-page: #1A1B1C;
+  --color-bg-surface: #232425;
+  --color-bg-subtle: #2A2B2C;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B8BBBF;
+  --color-text-tertiary: #868B92;
+  --color-text-disabled: #4A4C4F;
+  --color-text-link: #8bb8ff;
+  --color-text-on-brand: #1A1B1C;
+  --color-border-default: #3A3B3C;
+  --color-border-strong: #4A4C4F;
+  --color-border-subtle: #2E2F30;
+  --color-border-brand: #4a9eff;
+  --color-border-error: #f87171;
+  --color-border-success: #34d399;
+}
+html[data-theme="dark"] .c-blue { fill: var(--color-cat-blue-800); stroke: var(--color-cat-blue-200); color: var(--color-cat-blue-100); background-color: var(--color-cat-blue-800); border-color: var(--color-cat-blue-200); }
+html[data-theme="dark"] .c-green { fill: var(--color-cat-green-800); stroke: var(--color-cat-green-200); color: var(--color-cat-green-100); background-color: var(--color-cat-green-800); border-color: var(--color-cat-green-200); }
+html[data-theme="dark"] .c-amber { fill: var(--color-cat-amber-800); stroke: var(--color-cat-amber-200); color: var(--color-cat-amber-100); background-color: var(--color-cat-amber-800); border-color: var(--color-cat-amber-200); }
+html[data-theme="dark"] .c-red { fill: var(--color-cat-red-800); stroke: var(--color-cat-red-200); color: var(--color-cat-red-100); background-color: var(--color-cat-red-800); border-color: var(--color-cat-red-200); }
+html[data-theme="dark"] .c-purple { fill: var(--color-cat-purple-800); stroke: var(--color-cat-purple-200); color: var(--color-cat-purple-100); background-color: var(--color-cat-purple-800); border-color: var(--color-cat-purple-200); }
+html[data-theme="dark"] .c-teal { fill: var(--color-cat-teal-800); stroke: var(--color-cat-teal-200); color: var(--color-cat-teal-100); background-color: var(--color-cat-teal-800); border-color: var(--color-cat-teal-200); }
+html[data-theme="dark"] .c-coral { fill: var(--color-cat-coral-800); stroke: var(--color-cat-coral-200); color: var(--color-cat-coral-100); background-color: var(--color-cat-coral-800); border-color: var(--color-cat-coral-200); }
+html[data-theme="dark"] .c-pink { fill: var(--color-cat-pink-800); stroke: var(--color-cat-pink-200); color: var(--color-cat-pink-100); background-color: var(--color-cat-pink-800); border-color: var(--color-cat-pink-200); }
+html[data-theme="dark"] .c-gray { fill: var(--color-cat-gray-800); stroke: var(--color-cat-gray-200); color: var(--color-cat-gray-100); background-color: var(--color-cat-gray-800); border-color: var(--color-cat-gray-200); }
+:root { color-scheme: dark; }
+html, body { margin: 0; padding: 0; background: transparent !important; box-sizing: border-box;
+             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Inter', 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'; }
+*, *::before, *::after { box-sizing: inherit; }
+svg, svg text, svg tspan { font-family: inherit; }
+</style>
+<script>
+function sendPrompt(text) {
+  window.parent.postMessage(
+    { type: 'genspark_visualize_send_prompt', text: String(text) }, '*'
+  );
+}
+function _reportHeight() {
+  var h = Math.max(
+    document.body ? document.body.scrollHeight : 0,
+    document.documentElement ? document.documentElement.scrollHeight : 0,
+    100
+  );
+  window.parent.postMessage({ type: 'genspark_visualize_height', height: h }, '*');
+}
+window.addEventListener('load', function() {
+  _reportHeight();
+  if (window.ResizeObserver) {
+    new ResizeObserver(_reportHeight).observe(document.body);
+  }
+});
+window.addEventListener('resize', _reportHeight);
+
+// ── PNG export (rasterize the rendered widget inside the iframe) ─────────────
+// Runs here because sandbox="allow-scripts" (no allow-same-origin) makes the
+// iframe DOM unreachable from the parent. Clone <body>, swap each <canvas>
+// (Chart.js) for a snapshot <img>, inline the document styles with dark-scheme
+// rules stripped for a deterministic light export, wrap in <svg><foreignObject>,
+// and rasterize via a data: URL (a Blob URL would taint the canvas in Chromium).
+function _gsExportFont() { return "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Inter', 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'"; }
+function _gsCollectStyles() {
+  var out = '';
+  var s = document.querySelectorAll('style');
+  for (var i = 0; i < s.length; i++) { out += (s[i].textContent || '') + '\n'; }
+  return out;
+}
+function _gsStripDarkMedia(css) {
+  var marker = '@media (prefers-color-scheme: dark)';
+  var idx = css.indexOf(marker);
+  while (idx !== -1) {
+    var brace = css.indexOf('{', idx);
+    if (brace === -1) { css = css.slice(0, idx); break; }
+    var depth = 1, j = brace + 1;
+    while (j < css.length && depth > 0) {
+      var ch = css.charAt(j);
+      if (ch === '{') depth++; else if (ch === '}') depth--;
+      j++;
+    }
+    css = css.slice(0, idx) + css.slice(j);
+    idx = css.indexOf(marker);
+  }
+  return css;
+}
+function _gsCleanup(node) {
+  var scripts = node.querySelectorAll('script');
+  for (var i = 0; i < scripts.length; i++) {
+    if (scripts[i].parentNode) scripts[i].parentNode.removeChild(scripts[i]);
+  }
+  var nameRe = /^[A-Za-z_:][A-Za-z0-9_:.-]*$/;
+  var els = node.querySelectorAll('*');
+  for (var k = 0; k < els.length; k++) {
+    var attrs = els[k].attributes;
+    for (var a = attrs.length - 1; a >= 0; a--) {
+      if (!nameRe.test(attrs[a].name)) els[k].removeAttribute(attrs[a].name);
+    }
+  }
+}
+function _gsSubstituteCanvases(live, clone) {
+  var lc = live.querySelectorAll('canvas');
+  var cc = clone.querySelectorAll('canvas');
+  for (var i = 0; i < lc.length && i < cc.length; i++) {
+    var data = lc[i].toDataURL('image/png');
+    var img = document.createElement('img');
+    img.setAttribute('src', data);
+    img.setAttribute('style', (cc[i].getAttribute('style') || '') +
+      ';width:' + lc[i].offsetWidth + 'px;height:' + lc[i].offsetHeight + 'px');
+    if (cc[i].parentNode) cc[i].parentNode.replaceChild(img, cc[i]);
+  }
+}
+function _gsPostPng(id, dataUrl, error) {
+  window.parent.postMessage(
+    { type: 'genspark_visualize_png', id: id, dataUrl: dataUrl || null, error: error || null },
+    '*'
+  );
+}
+function _gsRasterize(id, scale) {
+  try {
+    scale = scale || 2;
+    var PAD = 16;  // breathing room so content never sits flush against the edge
+    var W = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth, 1);
+    var H = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight, 1);
+    var bodyClone = document.body.cloneNode(true);
+    _gsSubstituteCanvases(document.body, bodyClone);
+    _gsCleanup(bodyClone);
+    var wrapper = document.createElement('div');
+    wrapper.setAttribute('style',
+      'font-family:' + _gsExportFont() + ';box-sizing:border-box;width:' + W + 'px');
+    while (bodyClone.firstChild) { wrapper.appendChild(bodyClone.firstChild); }
+    var inner = new XMLSerializer().serializeToString(wrapper);
+    var styleTag = '<style>' + _gsStripDarkMedia(_gsCollectStyles()) +
+      ' svg, svg text, svg tspan { font-family:' + _gsExportFont() + '; }</style>';
+    var CW = W + PAD * 2, CH = H + PAD * 2;
+    var SW = Math.round(CW * scale), SH = Math.round(CH * scale);
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + SW +
+      '" height="' + SH + '" viewBox="0 0 ' + CW + ' ' + CH + '">' +
+      '<foreignObject x="' + PAD + '" y="' + PAD + '" width="' + W + '" height="' + H + '">' +
+      '<div xmlns="http://www.w3.org/1999/xhtml">' + styleTag + inner + '</div>' +
+      '</foreignObject></svg>';
+    var img = new Image();
+    img.onload = function() {
+      try {
+        var cv = document.createElement('canvas');
+        cv.width = SW; cv.height = SH;
+        var ctx = cv.getContext('2d');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, SW, SH);
+        ctx.drawImage(img, 0, 0);
+        _gsPostPng(id, cv.toDataURL('image/png'), null);
+      } catch (e) { _gsPostPng(id, null, 'tainted'); }
+    };
+    img.onerror = function() { _gsPostPng(id, null, 'image_error'); };
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  } catch (e) {
+    _gsPostPng(id, null,
+      (e && e.name === 'SecurityError') ? 'tainted' : String((e && e.message) || e));
+  }
+}
+window.addEventListener('message', function(ev) {
+  var d = ev.data || {};
+  if (!d || d.type !== 'genspark_visualize_request_png') return;
+  var run = function() { _gsRasterize(d.id, d.scale); };
+  if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+    document.fonts.ready.then(function() {
+      if (window.requestAnimationFrame) window.requestAnimationFrame(run);
+      else window.setTimeout(run, 0);
+    });
+  } else if (window.requestAnimationFrame) {
+    window.requestAnimationFrame(run);
+  } else {
+    window.setTimeout(run, 0);
+  }
+});
+</script>
+</head>
+<body><style>
+  .os-wrap{
+    width:100%;max-width:758px;min-height:700px;position:relative;overflow:hidden;
+    border:1px solid var(--color-border-default);border-radius:24px;
+    background:linear-gradient(180deg,var(--color-bg-surface),var(--color-bg-subtle));
+    box-shadow:var(--shadow-lg);
+    color:var(--color-text-primary);
+  }
+  .wallpaper{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--color-brand-secondary) 22%, transparent), transparent 30%),
+      radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--color-brand-primary) 18%, transparent), transparent 28%),
+      radial-gradient(circle at 50% 75%, color-mix(in srgb, var(--color-info) 16%, transparent), transparent 34%),
+      linear-gradient(135deg, color-mix(in srgb, var(--color-bg-surface) 50%, transparent), color-mix(in srgb, var(--color-bg-subtle) 90%, transparent));
+  }
+  .menu{
+    position:absolute;left:0;right:0;top:0;height:40px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 var(--space-16);background:color-mix(in srgb, var(--color-bg-surface) 80%, transparent);
+    border-bottom:1px solid var(--color-border-subtle);backdrop-filter:blur(8px);z-index:20;
+    font-size:var(--text-small);
+  }
+  .menu .left,.menu .right{display:flex;align-items:center;gap:var(--space-12)}
+  .pill{padding:6px 10px;border-radius:999px;background:color-mix(in srgb, var(--color-bg-page) 18%, transparent);border:1px solid var(--color-border-subtle)}
+  .desktop-title{position:absolute;left:24px;top:62px;z-index:2}
+  .desktop-title h2{margin:0;font-size:var(--text-h3)}
+  .desktop-title p{margin:6px 0 0;color:var(--color-text-secondary);font-size:var(--text-small)}
+  .desktop-icons{position:absolute;right:18px;top:68px;display:grid;gap:12px;z-index:2}
+  .desktop-icon{width:92px;padding:10px 8px;border-radius:16px;background:color-mix(in srgb, var(--color-bg-surface) 52%, transparent);border:1px solid var(--color-border-subtle);backdrop-filter:blur(6px);text-align:center;cursor:pointer;user-select:none}
+  .desktop-icon:hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+  .desktop-icon .emoji{font-size:28px;line-height:1.2}
+  .desktop-icon .label{font-size:var(--text-caption);margin-top:4px;color:var(--color-text-primary)}
+  .workspace{position:absolute;inset:48px 16px 92px 16px;overflow:hidden}
+  .window{
+    position:absolute;min-width:300px;max-width:92%;height:320px;border-radius:18px;overflow:hidden;
+    background:color-mix(in srgb, var(--color-bg-surface) 92%, transparent);border:1px solid var(--color-border-default);
+    box-shadow:var(--shadow-lg);display:flex;flex-direction:column;backdrop-filter:blur(12px);
+    animation:pop .18s ease-out;will-change:transform,opacity;
+  }
+  @keyframes pop{from{opacity:.55;transform:translateY(12px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+  .window-header{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--color-border-subtle);background:color-mix(in srgb, var(--color-bg-page) 14%, transparent)}
+  .traffic{display:flex;gap:8px}
+  .dot{width:12px;height:12px;border-radius:50%;border:1px solid color-mix(in srgb, var(--color-text-primary) 15%, transparent)}
+  .red{background:#ff5f57}.yellow{background:#febc2e}.green{background:#28c840}
+  .window-title{font-size:var(--text-small);font-weight:600}
+  .window-body{flex:1;padding:14px;overflow:auto}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}
+  .card{background:var(--color-bg-surface);border:1px solid var(--color-border-default);border-radius:14px;padding:12px}
+  .muted{color:var(--color-text-secondary)}
+  .mini-list{display:grid;gap:8px}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .btn{border:1px solid var(--color-border-default);background:var(--color-bg-surface);color:var(--color-text-primary);padding:9px 12px;border-radius:12px;cursor:pointer}
+  .btn.primary{background:var(--color-brand-primary);color:var(--color-text-on-brand);border-color:transparent}
+  .btn.small{padding:7px 10px;font-size:var(--text-caption)}
+  .dock{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:8px;align-items:flex-end;padding:10px 12px;border-radius:22px;background:color-mix(in srgb, var(--color-bg-surface) 72%, transparent);border:1px solid var(--color-border-default);backdrop-filter:blur(12px);z-index:25;max-width:calc(100% - 24px);overflow:auto}
+  .dock-btn{width:58px;height:58px;border-radius:16px;border:1px solid var(--color-border-subtle);background:linear-gradient(180deg,color-mix(in srgb, var(--color-bg-page) 10%, transparent),color-mix(in srgb, var(--color-bg-surface) 92%, transparent));cursor:pointer;display:grid;place-items:center;font-size:24px;position:relative;flex:0 0 auto}
+  .dock-btn:hover{transform:translateY(-4px)}
+  .dock-btn.active::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:var(--color-brand-secondary)}
+  .dock-label{position:absolute;bottom:72px;left:50%;transform:translateX(-50%);background:var(--color-bg-surface);border:1px solid var(--color-border-default);border-radius:10px;padding:6px 8px;font-size:var(--text-caption);white-space:nowrap;display:none}
+  .dock-btn:hover .dock-label{display:block}
+  .textarea{width:100%;height:190px;resize:none;border:1px solid var(--color-border-default);border-radius:12px;padding:12px;background:var(--color-bg-page);color:var(--color-text-primary)}
+  .terminal{background:#111827;color:#d1fae5;border-radius:14px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;min-height:210px}
+  .tabs{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+  .tab{padding:7px 10px;border-radius:999px;background:var(--color-bg-page);border:1px solid var(--color-border-default);font-size:var(--text-caption)}
+  .progress{height:10px;border-radius:999px;background:var(--color-bg-page);overflow:hidden;border:1px solid var(--color-border-subtle)}
+  .progress > span{display:block;height:100%;width:64%;background:linear-gradient(90deg,var(--color-brand-primary),var(--color-brand-secondary));border-radius:999px}
+  .toggle{width:44px;height:26px;border-radius:999px;background:var(--color-bg-page);border:1px solid var(--color-border-default);position:relative}
+  .toggle::after{content:'';position:absolute;top:3px;left:22px;width:18px;height:18px;border-radius:50%;background:var(--color-brand-primary)}
+  .games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .game-card{padding:12px;border-radius:14px;border:1px solid var(--color-border-default);background:var(--color-bg-page)}
+  .stat{font-size:28px;font-weight:700;margin:8px 0}
+  .clock-face{width:120px;height:120px;border-radius:50%;border:2px solid var(--color-border-default);margin:auto;position:relative;background:color-mix(in srgb, var(--color-bg-page) 65%, transparent)}
+  .hand{position:absolute;left:50%;bottom:50%;transform-origin:bottom center;background:var(--color-text-primary);border-radius:999px}
+  .h{width:4px;height:28px;margin-left:-2px}.m{width:3px;height:42px;margin-left:-1.5px}.s{width:2px;height:46px;margin-left:-1px;background:var(--color-brand-secondary)}
+  .footer-actions{position:absolute;left:24px;bottom:106px;display:flex;gap:10px;z-index:3;flex-wrap:wrap}
+  @media (max-width:680px){
+    .workspace{inset:48px 10px 92px 10px}
+    .desktop-icons{display:none}
+    .grid2,.games{grid-template-columns:1fr}
+    .window{min-width:unset;width:calc(100% - 8px)!important;left:4px!important}
+  }
+</style>
+<div class="os-wrap" id="os">
+  <div class="wallpaper"></div>
+  <div class="menu">
+    <div class="left"><strong>◉ Lunara OS</strong><span class="pill">Balanced mode</span><span class="muted">Browser-safe build</span></div>
+    <div class="right"><span>Wi‑Fi</span><span>Battery 91%</span><span id="menuTime">--:--</span></div>
+  </div>
+  <div class="desktop-title">
+    <h2>Lunara OS</h2>
+    <p>macOS-like web desktop with lazy-loaded apps and lightweight transitions</p>
+  </div>
+  <div class="desktop-icons">
+    <div class="desktop-icon" data-app="Notes"><div class="emoji">📝</div><div class="label">Notes</div></div>
+    <div class="desktop-icon" data-app="Finder"><div class="emoji">📁</div><div class="label">Finder</div></div>
+    <div class="desktop-icon" data-app="Clock"><div class="emoji">⏰</div><div class="label">Clock</div></div>
+    <div class="desktop-icon" data-app="Lunara Arcade"><div class="emoji">🎮</div><div class="label">Store</div></div>
+  </div>
+  <div class="footer-actions">
+    <button class="btn primary" id="buildBtn">Build full version</button>
+    <button class="btn" id="planBtn">Send architecture plan</button>
+  </div>
+  <div class="workspace" id="workspace"></div>
+  <div class="dock" id="dock"></div>
+</div>
+<script>
+(() => {
+  const apps = [
+    {name:'Finder', icon:'📁'},
+    {name:'Notes', icon:'📝'},
+    {name:'Terminal', icon:'⌘'},
+    {name:'Browser', icon:'🌐'},
+    {name:'Media', icon:'🎵'},
+    {name:'Settings', icon:'⚙️'},
+    {name:'Clock', icon:'⏰'},
+    {name:'Lunara Arcade', icon:'🛍️'},
+    {name:'Games', icon:'🎮'}
+  ];
+
+  const defaultPos = {
+    Finder:{x:18,y:24,w:360,z:2},
+    Notes:{x:120,y:68,w:380,z:4},
+    Terminal:{x:68,y:118,w:380,z:5},
+    Browser:{x:205,y:34,w:400,z:3},
+    Media:{x:245,y:150,w:360,z:6},
+    Settings:{x:330,y:72,w:330,z:7},
+    Clock:{x:380,y:150,w:300,z:8},
+    'Lunara Arcade':{x:162,y:112,w:390,z:9},
+    Games:{x:288,y:192,w:320,z:10}
+  };
+
+  const open = new Map();
+  let z = 20;
+  let notesValue = 'Welcome to Lunara OS\n\nThis web OS is optimized to stay light:\n• apps mount only when opened\n• no background loops\n• simple CSS transforms only\n• minimal DOM depth';
+  let clickScore = 0;
+
+  const workspace = document.getElementById('workspace');
+  const dock = document.getElementById('dock');
+
+  function nowLabel(){
+    const d = new Date();
+    return d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  }
+
+  function updateClock(){
+    document.getElementById('menuTime').textContent = nowLabel();
+    document.querySelectorAll('.clock-live').forEach(el => el.textContent = nowLabel());
+    const d = new Date();
+    const h = d.getHours()%12;
+    const m = d.getMinutes();
+    const s = d.getSeconds();
+    const hourDeg = (h + m/60) * 30;
+    const minDeg = m * 6;
+    const secDeg = s * 6;
+    document.querySelectorAll('.h').forEach(el => el.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`);
+    document.querySelectorAll('.m').forEach(el => el.style.transform = `translateX(-50%) rotate(${minDeg}deg)`);
+    document.querySelectorAll('.s').forEach(el => el.style.transform = `translateX(-50%) rotate(${secDeg}deg)`);
+  }
+
+  function appHtml(name){
+    if(name === 'Finder') return `
+      <div class="grid2">
+        <div class="card">
+          <div class="row"><strong>Smart folders</strong><span class="muted">4 items</span></div>
+          <div class="mini-list" style="margin-top:10px">
+            <div class="row"><span>📄 Projects</span><span class="muted">12</span></div>
+            <div class="row"><span>🎧 Media</span><span class="muted">38</span></div>
+            <div class="row"><span>🎮 Games</span><span class="muted">6</span></div>
+            <div class="row"><span>🕒 Recent</span><span class="muted">19</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <strong>Quick preview</strong>
+          <p class="muted">A real build would stream folder data only when needed and virtualize long lists.</p>
+          <button class="btn small" onclick="sendPrompt('Build Lunara OS with a virtualized file manager and search.')">Expand file system</button>
+        </div>
+      </div>`;
+
+    if(name === 'Notes') return `
+      <div class="card" style="padding:0;border:none;background:transparent">
+        <textarea class="textarea" id="notesBox">${notesValue.replace(/</g,'&lt;')}</textarea>
+      </div>
+      <div class="row" style="margin-top:10px"><span class="muted">Autosave can be added later with IndexedDB</span><button class="btn small" id="saveNote">Save note</button></div>`;
+
+    if(name === 'Terminal') return `
+      <div class="terminal">
+        <div>$ boot --profile balanced</div>
+        <div>✓ compositor: lightweight</div>
+        <div>✓ dock: mounted</div>
+        <div>✓ windows: lazy-loaded</div>
+        <div>✓ game-store alias: Lunara Arcade</div>
+        <div style="margin-top:10px;color:#93c5fd">$ hint: use workers for heavy tasks, not the main UI thread</div>
+        <div style="margin-top:10px;color:#fcd34d">$ next: add search, wallpapers, notifications, shortcuts</div>
+      </div>`;
+
+    if(name === 'Browser') return `
+      <div class="tabs"><span class="tab">Home</span><span class="tab">Docs</span><span class="tab">Store</span></div>
+      <div class="card">
+        <div class="row"><strong>Lunara Start Page</strong><span class="muted">instant render</span></div>
+        <p class="muted">In the production build, external pages should open in a sandboxed view or dedicated content app to keep the desktop shell fast.</p>
+        <div class="progress"><span></span></div>
+      </div>`;
+
+    if(name === 'Media') return `
+      <div class="grid2">
+        <div class="card">
+          <strong>Now playing</strong>
+          <p class="muted">Lo‑fi System Sounds</p>
+          <div class="progress"><span></span></div>
+          <div class="row" style="margin-top:12px"><button class="btn small">⏮</button><button class="btn primary small">▶</button><button class="btn small">⏭</button></div>
+        </div>
+        <div class="card">
+          <strong>Playlist</strong>
+          <div class="mini-list" style="margin-top:10px"><div>• Focus Session</div><div>• Neon Rain</div><div>• Startup Theme</div></div>
+        </div>
+      </div>`;
+
+    if(name === 'Settings') return `
+      <div class="mini-list">
+        <div class="card row"><div><strong>Reduced motion</strong><div class="muted">Recommended for lower-end devices</div></div><div class="toggle"></div></div>
+        <div class="card row"><div><strong>Blur effects</strong><div class="muted">Keep subtle for balanced mode</div></div><div class="toggle"></div></div>
+        <div class="card row"><div><strong>Background services</strong><div class="muted">No idle polling in this prototype</div></div><div class="pill">Off</div></div>
+      </div>`;
+
+    if(name === 'Clock') return `
+      <div class="grid2">
+        <div class="card" style="text-align:center">
+          <div class="clock-face"><div class="hand h"></div><div class="hand m"></div><div class="hand s"></div></div>
+          <div class="stat clock-live">--:--</div>
+        </div>
+        <div class="card">
+          <strong>Alarms</strong>
+          <div class="mini-list" style="margin-top:10px">
+            <div class="row"><span>07:00 Wake up</span><span class="pill">On</span></div>
+            <div class="row"><span>18:30 Stretch</span><span class="pill">Off</span></div>
+          </div>
+          <button class="btn small" style="margin-top:12px">+ Add alarm</button>
+        </div>
+      </div>`;
+
+    if(name === 'Lunara Arcade') return `
+      <div class="games">
+        <div class="game-card"><strong>Orbit Dash</strong><p class="muted">42 MB • instant launch</p><button class="btn small">Install</button></div>
+        <div class="game-card"><strong>Pixel Drift</strong><p class="muted">65 MB • cloud save</p><button class="btn small">Install</button></div>
+        <div class="game-card"><strong>Zen Blocks</strong><p class="muted">18 MB • offline</p><button class="btn small">Install</button></div>
+      </div>`;
+
+    if(name === 'Games') return `
+      <div class="card" style="text-align:center">
+        <strong>Tap Booster</strong>
+        <div class="muted" style="margin-top:6px">Tiny built-in game to keep the demo lightweight</div>
+        <div class="stat" id="score">${clickScore}</div>
+        <button class="btn primary" id="tapBtn">Tap</button>
+      </div>`;
+
+    return `<div class="card">${name}</div>`;
+  }
+
+  function renderDock(){
+    dock.innerHTML = apps.map(app => `
+      <button class="dock-btn ${open.has(app.name)?'active':''}" data-app="${app.name}" aria-label="${app.name}">
+        <span>${app.icon}</span>
+        <span class="dock-label">${app.name}</span>
+      </button>`).join('');
+  }
+
+  function createWindow(name){
+    const pos = defaultPos[name] || {x:50,y:50,w:340,z:2};
+    const win = document.createElement('div');
+    win.className = 'window';
+    win.style.left = pos.x + 'px';
+    win.style.top = pos.y + 'px';
+    win.style.width = pos.w + 'px';
+    win.style.zIndex = ++z;
+    win.dataset.app = name;
+    win.innerHTML = `
+      <div class="window-header">
+        <div class="traffic">
+          <button class="dot red" data-close="${name}" title="Close"></button>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <div class="window-title">${name}</div>
+        <div class="muted">web app</div>
+      </div>
+      <div class="window-body">${appHtml(name)}</div>`;
+    win.addEventListener('mousedown', () => win.style.zIndex = ++z);
+    workspace.appendChild(win);
+    open.set(name, win);
+    attachWindowEvents(win, name);
+    renderDock();
+    updateClock();
+    setTimeout(() => window._reportHeight && _reportHeight(), 40);
+  }
+
+  function attachWindowEvents(win, name){
+    const close = win.querySelector(`[data-close="${CSS.escape(name)}"]`);
+    if(close) close.addEventListener('click', () => {
+      open.delete(name);
+      win.remove();
+      renderDock();
+      setTimeout(() => window._reportHeight && _reportHeight(), 40);
+    });
+    if(name === 'Notes'){
+      const box = win.querySelector('#notesBox');
+      const save = win.querySelector('#saveNote');
+      if(box) box.addEventListener('input', e => notesValue = e.target.value);
+      if(save) save.addEventListener('click', () => {
+        notesValue = box.value;
+        save.textContent = 'Saved';
+        setTimeout(() => save.textContent = 'Save note', 900);
+      });
+    }
+    if(name === 'Games'){
+      const btn = win.querySelector('#tapBtn');
+      const score = win.querySelector('#score');
+      if(btn) btn.addEventListener('click', () => {
+        clickScore += 1;
+        score.textContent = clickScore;
+      });
+    }
+  }
+
+  function openApp(name){
+    if(open.has(name)){
+      open.get(name).style.zIndex = ++z;
+      return;
+    }
+    createWindow(name);
+  }
+
+  renderDock();
+  dock.addEventListener('click', e => {
+    const btn = e.target.closest('.dock-btn');
+    if(!btn) return;
+    openApp(btn.dataset.app);
+  });
+  document.querySelectorAll('.desktop-icon').forEach(el => el.addEventListener('click', () => openApp(el.dataset.app)));
+  document.getElementById('buildBtn').addEventListener('click', () => sendPrompt('Build the full Lunara OS website as a polished single-page app with balanced visuals and speed.'));
+  document.getElementById('planBtn').addEventListener('click', () => sendPrompt('Send me the architecture and performance plan for the Lunara OS website.'));
+
+  openApp('Finder');
+  openApp('Notes');
+  openApp('Settings');
+  updateClock();
+  setInterval(updateClock, 1000);
+  setTimeout(() => window._reportHeight && _reportHeight(), 60);
+})();
+</script></body>
+</html>
