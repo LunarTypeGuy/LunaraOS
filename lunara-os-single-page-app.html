@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lunara OS</title>
+<style>
+:root{
+  --bg:#070b17;--bg2:#0d1430;--panel:rgba(18,24,48,.62);--panel-2:rgba(28,36,68,.52);--line:rgba(255,255,255,.1);
+  --text:#eef3ff;--muted:#9ca7c9;--accent:#7c9cff;--accent2:#7df0ff;--good:#5ee5a8;--warn:#ffd166;--shadow:0 18px 60px rgba(0,0,0,.35);
+  --radius:20px;--taskbar-h:76px;--title-h:44px;
+}
+*{box-sizing:border-box} html,body{height:100%;margin:0;overflow:hidden;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(circle at top,#16224d 0%,#080c19 45%,#04070f 100%);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.shell{position:relative;height:100%;overflow:hidden}
+.space-bg,.space-bg:before,.space-bg:after{position:absolute;inset:0;content:""}
+.space-bg{background:radial-gradient(circle at 20% 15%, rgba(125,240,255,.16), transparent 22%),radial-gradient(circle at 80% 22%, rgba(124,156,255,.14), transparent 25%),radial-gradient(circle at 50% 80%, rgba(196,106,255,.10), transparent 28%),linear-gradient(160deg,#09101f,#090d1a 42%,#05070d);transition:filter .35s ease, background .35s ease}
+.space-bg:before{background-image:radial-gradient(#ffffff 1px,transparent 1px);background-size:34px 34px;opacity:.26;animation:drift 45s linear infinite}
+.space-bg:after{background:radial-gradient(circle at 30% 40%, rgba(255,255,255,.08), transparent 35%),radial-gradient(circle at 70% 60%, rgba(125,240,255,.08), transparent 30%);filter:blur(30px);opacity:.9}
+@keyframes drift{from{transform:translateY(0)}to{transform:translateY(34px)}}
+.boot{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:50;background:linear-gradient(180deg,rgba(3,6,12,.92),rgba(9,13,24,.94));backdrop-filter:blur(24px);transition:opacity .45s ease,visibility .45s ease}
+.boot.hide{opacity:0;visibility:hidden}
+.boot-card{width:min(540px,92vw);padding:28px;border-radius:28px;background:linear-gradient(180deg,rgba(20,28,58,.78),rgba(10,15,32,.86));border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:16px;margin-bottom:14px}.moon{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));position:relative;box-shadow:0 0 30px rgba(124,156,255,.35)}.moon:after{content:"";position:absolute;right:8px;top:6px;width:40px;height:40px;border-radius:50%;background:#0a1021}
+.brand h1{margin:0;font-size:34px}.tag{color:var(--muted);margin:4px 0 0}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}.profile-btn{padding:18px;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--text);text-align:left;transition:.22s ease}.profile-btn:hover{transform:translateY(-2px);border-color:rgba(125,240,255,.35);background:rgba(255,255,255,.07)}
+.profile-btn strong{display:block;font-size:18px;margin-bottom:6px}.mini{font-size:13px;color:var(--muted)}
+.topbar{position:absolute;top:0;left:0;right:0;height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:rgba(10,16,32,.38);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06);z-index:20}
+.top-left,.top-right{display:flex;align-items:center;gap:10px}.top-chip,.space-chip,.tray-btn,.dock-app,.widget,.start-menu,.panel,.window,.search-pill{backdrop-filter:blur(16px)}
+.top-chip{padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:13px}
+.desktop{position:absolute;inset:40px 0 var(--taskbar-h) 0;padding:18px 18px 12px;overflow:hidden}
+.hero{display:flex;justify-content:space-between;gap:18px;position:relative;z-index:2}.hero-copy{max-width:460px}.hero h2{margin:0 0 8px;font-size:34px}.hero p{margin:0;color:var(--muted);line-height:1.45}
+.space-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.space-chip{padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--text);transition:.2s ease}.space-chip.active{background:linear-gradient(135deg,rgba(124,156,255,.28),rgba(125,240,255,.18));border-color:rgba(125,240,255,.45)}
+.widget-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-self:flex-start;min-width:360px}
+.widget{padding:14px 16px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
+.widget h3{margin:0 0 6px;font-size:14px;color:var(--muted);font-weight:600}.widget .big{font-size:27px;font-weight:700}.widget textarea{width:100%;height:86px;border:none;outline:none;border-radius:14px;padding:10px;background:rgba(255,255,255,.05);color:var(--text);resize:none}
+.desktop-icons{position:absolute;right:18px;top:182px;display:grid;grid-template-columns:repeat(2,92px);gap:14px;z-index:2}.desk-app{display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);color:var(--text);transition:.18s ease}.desk-app:hover{transform:translateY(-2px);background:rgba(255,255,255,.08)}.desk-app .icon{width:46px;height:46px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,rgba(124,156,255,.28),rgba(125,240,255,.16));font-size:24px}.desk-app span:last-child{font-size:12px;text-align:center}
+.workspace{position:absolute;inset:0;z-index:5}.window{position:absolute;min-width:320px;min-height:220px;width:420px;height:300px;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,rgba(21,27,54,.85),rgba(11,16,33,.88));border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow);resize:both}.window.max{inset:18px 18px 18px 18px!important;width:auto!important;height:auto!important}.window.min{display:none}
+.titlebar{height:var(--title-h);display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);cursor:grab}.titlebar:active{cursor:grabbing}.title-left,.title-actions{display:flex;align-items:center;gap:10px}.dot{width:13px;height:13px;border:none;border-radius:50%}.close{background:#ff5f57}.minimize{background:#febc2f}.maximize{background:#28c840}.titlebar strong{font-size:14px}.window-body{height:calc(100% - var(--title-h));padding:16px;overflow:auto}
+.card-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.card,.list-item,.shortcut{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:18px}.card{padding:14px}.card h4{margin:0 0 8px}.muted{color:var(--muted)} .list{display:grid;gap:10px}.list-item{padding:12px 14px}.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08);font-size:12px}
+.start-menu{position:absolute;left:18px;bottom:90px;width:min(430px,calc(100vw - 36px));padding:16px;border-radius:24px;background:linear-gradient(180deg,rgba(16,22,44,.86),rgba(8,12,24,.92));border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow);z-index:30}.search-pill{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}.search-pill input{width:100%;background:none;border:none;outline:none;color:var(--text)}
+.app-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.app-btn{padding:14px 12px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--text);text-align:left;transition:.16s ease}.app-btn:hover{background:rgba(255,255,255,.08)}.app-btn b{display:block;margin-top:8px}
+.panel{position:absolute;right:18px;bottom:90px;width:320px;padding:16px;border-radius:24px;background:linear-gradient(180deg,rgba(16,22,44,.86),rgba(8,12,24,.92));border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow);z-index:30}.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06)}.toggle{width:46px;height:26px;border-radius:999px;background:rgba(255,255,255,.12);position:relative}.toggle:after{content:"";position:absolute;width:20px;height:20px;right:3px;top:3px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent))}
+.taskbar{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);height:62px;width:min(900px,calc(100vw - 24px));display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:linear-gradient(180deg,rgba(16,22,44,.72),rgba(8,12,24,.82));border:1px solid rgba(255,255,255,.1);border-radius:24px;box-shadow:var(--shadow);z-index:25}
+.task-left,.task-center,.task-right{display:flex;align-items:center;gap:10px}.dock-app,.tray-btn{border:none;color:var(--text);background:rgba(255,255,255,.05)}.dock-app{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;font-size:22px;position:relative}.dock-app.active:after{content:"";position:absolute;bottom:5px;width:6px;height:6px;border-radius:50%;background:var(--accent2)}.tray-btn{padding:10px 12px;border-radius:16px}
+.status{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+.shortcut-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}.shortcut{padding:10px 12px;font-size:13px}
+.progress{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}.tag-list{display:flex;flex-wrap:wrap;gap:8px}.tag-list span{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.07);font-size:12px}
+@media (max-width:960px){.hero{flex-direction:column}.widget-grid{grid-template-columns:repeat(2,minmax(0,1fr));min-width:0}.desktop-icons{display:none}}
+@media (max-width:720px){.widget-grid,.app-grid,.card-grid,.two-col{grid-template-columns:1fr}.window{min-width:unset;width:calc(100vw - 28px)!important;left:14px!important}.hero h2{font-size:28px}.taskbar{height:auto;padding:10px;gap:10px;flex-direction:column;align-items:stretch}.task-left,.task-center,.task-right{justify-content:center;flex-wrap:wrap}.desktop{inset:40px 0 100px 0}}
+</style>
+</head>
+<body>
+<div class="shell" id="shell">
+  <div class="space-bg" id="spaceBg"></div>
+  <div class="boot" id="boot">
+    <div class="boot-card">
+      <div class="brand"><div class="moon"></div><div><h1>Lunara OS</h1><p class="tag">A polished digital universe for gaming, creativity, community, and customization.</p></div></div>
+      <div class="mini">Choose how you want to enter Lunara. Local works fully offline. Lunara Account is optional for sync across devices.</div>
+      <div class="profile-grid">
+        <button class="profile-btn" data-mode="local"><strong>Local Profile</strong><span class="mini">Offline-ready • stores your theme, notes, space, and preferences locally.</span></button>
+        <button class="profile-btn" data-mode="cloud"><strong>Lunara Account</strong><span class="mini">Cloud-ready shell • profile sync concept for themes, bookmarks, wallpapers, apps, and launcher settings.</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="topbar">
+    <div class="top-left"><div class="top-chip">◉ Lunara</div><div class="top-chip" id="activeSpaceLabel">Creative Space</div></div>
+    <div class="top-right"><div class="top-chip" id="profileLabel">Guest</div><div class="top-chip" id="clockLabel">--:--</div></div>
+  </div>
+
+  <div class="desktop">
+    <div class="hero">
+      <div class="hero-copy">
+        <h2>Explore your digital universe</h2>
+        <p>Lunara OS is built as a lightweight, space-themed web desktop with a unified design system, rounded glass windows, modular apps, and balanced performance.</p>
+        <div class="space-row" id="spaceRow">
+          <button class="space-chip" data-space="Gaming">Gaming</button>
+          <button class="space-chip" data-space="Work">Work</button>
+          <button class="space-chip active" data-space="Creative">Creative</button>
+          <button class="space-chip" data-space="Streaming">Streaming</button>
+          <button class="space-chip" data-space="School">School</button>
+        </div>
+      </div>
+      <div class="widget-grid">
+        <div class="widget"><h3>Clock</h3><div class="big" id="widgetClock">--:--</div><div class="mini">Local time</div></div>
+        <div class="widget"><h3>Weather</h3><div class="big">21°</div><div class="mini">Clear orbit • Aurora skies</div></div>
+        <div class="widget"><h3>Performance</h3><div class="big">Balanced</div><div class="mini">Smooth visuals with controlled effects</div></div>
+        <div class="widget"><h3>Quick Notes</h3><textarea id="notesWidget" placeholder="Write a reminder..."></textarea></div>
+      </div>
+    </div>
+    <div class="desktop-icons" id="desktopIcons"></div>
+    <div class="workspace" id="workspace"></div>
+  </div>
+
+  <div class="start-menu hidden" id="startMenu">
+    <div class="search-pill"><span>⌕</span><input id="appSearch" placeholder="Search apps, spaces, settings" /></div>
+    <div class="app-grid" id="appGrid"></div>
+  </div>
+
+  <div class="panel hidden" id="quickPanel">
+    <div style="display:flex;justify-content:space-between;align-items:center"><strong>Quick Settings</strong><span class="mini">Luna Stream Mode ready</span></div>
+    <div class="toggle-row"><span>Wi‑Fi</span><div class="toggle"></div></div>
+    <div class="toggle-row"><span>Bluetooth</span><div class="toggle"></div></div>
+    <div class="toggle-row"><span>Reduce motion</span><div class="toggle"></div></div>
+    <div class="toggle-row" style="border-bottom:none"><span>Focus mode</span><div class="toggle"></div></div>
+  </div>
+
+  <div class="taskbar">
+    <div class="task-left">
+      <button class="dock-app" id="startBtn" title="Start">☾</button>
+      <div class="status">Lunara OS</div>
+    </div>
+    <div class="task-center" id="dock"></div>
+    <div class="task-right">
+      <button class="tray-btn" id="notifyBtn">🔔</button>
+      <button class="tray-btn" id="panelBtn">⚙️</button>
+      <div class="status">Wi‑Fi • Battery 91%</div>
+    </div>
+  </div>
+</div>
+<script>
+const APPS = [
+  {id:'files',name:'Luna Files',icon:'📁'},
+  {id:'browser',name:'Luna Browser',icon:'🌐'},
+  {id:'settings',name:'Luna Settings',icon:'⚙️'},
+  {id:'store',name:'Luna Store',icon:'🛍️'},
+  {id:'ai',name:'Luna AI',icon:'✨'},
+  {id:'community',name:'Community',icon:'🪐'},
+  {id:'chat',name:'Luna Chat',icon:'💬'},
+  {id:'craft',name:'LunaraCraft',icon:'⛏️'},
+  {id:'blox',name:'LunarBlox',icon:'🌙'},
+  {id:'gaming',name:'Gaming Hub',icon:'🎮'},
+  {id:'themes',name:'Theme Studio',icon:'🎨'}
+];
+const pos = {files:[56,130],browser:[170,82],settings:[285,115],store:[405,95],ai:[250,195],community:[480,170],chat:[100,230],craft:[335,235],blox:[210,150],gaming:[520,110],themes:[145,175]};
+const state = {mode:'local',space:localStorage.getItem('lunara-space')||'Creative',notes:localStorage.getItem('lunara-notes')||'',windows:new Map(),z:10};
+const $ = s => document.querySelector(s);
+const workspace = $('#workspace'), dock = $('#dock'), appGrid = $('#appGrid'), desktopIcons = $('#desktopIcons');
+const themes = {
+  Gaming:['#13203f','#08101f','rgba(90,157,255,.18)'], Work:['#18263d','#0a101a','rgba(94,229,168,.14)'], Creative:['#1a1434','#090d1a','rgba(196,106,255,.14)'], Streaming:['#25133d','#0a0d19','rgba(255,95,173,.15)'], School:['#101f35','#090d19','rgba(255,209,102,.15)']
+};
+function timeTick(){ const t = new Date(); const label = t.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); $('#clockLabel').textContent = label; $('#widgetClock').textContent = label; }
+setInterval(timeTick,1000); timeTick();
+$('#notesWidget').value = state.notes; $('#notesWidget').addEventListener('input',e=>{state.notes=e.target.value;localStorage.setItem('lunara-notes',state.notes)});
+function setSpace(space){ state.space=space; localStorage.setItem('lunara-space',space); $('#activeSpaceLabel').textContent = space+' Space'; document.querySelectorAll('.space-chip').forEach(b=>b.classList.toggle('active', b.dataset.space===space)); const [a,b,c]=themes[space]||themes.Creative; $('#spaceBg').style.background = `radial-gradient(circle at 20% 15%, ${c}, transparent 24%),radial-gradient(circle at 80% 22%, rgba(124,156,255,.13), transparent 25%),radial-gradient(circle at 50% 80%, rgba(125,240,255,.08), transparent 28%),linear-gradient(160deg, ${a}, ${b} 45%, #05070d)`; }
+document.querySelectorAll('.space-chip').forEach(btn=>btn.addEventListener('click',()=>setSpace(btn.dataset.space))); setSpace(state.space);
+document.querySelectorAll('.profile-btn').forEach(btn=>btn.addEventListener('click',()=>{state.mode=btn.dataset.mode; $('#profileLabel').textContent = state.mode==='local' ? 'Local Profile' : 'Lunara Account'; $('#boot').classList.add('hide'); setTimeout(()=>$('#boot').remove(),500);}));
+function appContent(id){
+  if(id==='files') return `<div class="card-grid"><div class="card"><h4>Smart folders</h4><div class="list"><div class="list-item">Projects <span class="muted">12 items</span></div><div class="list-item">Screenshots <span class="muted">Galaxy captures</span></div><div class="list-item">Mods <span class="muted">Fabric • Forge • NeoForge • Quilt</span></div><div class="list-item">Backups <span class="muted">Worlds and settings</span></div></div></div><div class="card"><h4>Tools</h4><div class="tag-list"><span>Tabs</span><span>Split View</span><span>Image Preview</span><span>ZIP Support</span><span>Tagging</span><span>Cloud Sync</span></div><p class="muted">Designed for favorites, search, recent files, and storage management.</p></div></div>`;
+  if(id==='browser') return `<div class="card"><h4>Luna Browser</h4><p class="muted">Built-in browser with tab groups, bookmarks, private mode, Luna AI integration, and browser sync.</p><div class="shortcut-row"><div class="shortcut">YouTube</div><div class="shortcut">Twitch</div><div class="shortcut">Minecraft.net</div><div class="shortcut">Lunara Website</div><div class="shortcut">LunarBlox Website</div></div><div class="two-col" style="margin-top:12px"><div class="card"><strong>Homepage</strong><p class="muted">Search, Lunara News, weather, favorite websites, recent apps, and community highlights.</p></div><div class="card"><strong>Sidebar</strong><p class="muted">Downloads, reading mode, passwords, ad block toggle, and synced bookmarks.</p></div></div>`;
+  if(id==='settings') return `<div class="two-col"><div class="card"><h4>Appearance</h4><div class="list"><div class="list-item">Dark / Light modes</div><div class="list-item">Accent colors</div><div class="list-item">Wallpapers and animated wallpapers</div><div class="list-item">Fonts, icons, and cursor customization</div></div></div><div class="card"><h4>System</h4><div class="list"><div class="list-item">Accounts and backup</div><div class="list-item">Privacy and accessibility</div><div class="list-item">Display, battery, and storage cleanup</div><div class="list-item">Luna Spaces and Stream Mode</div></div></div></div>`;
+  if(id==='store') return `<div class="card-grid"><div class="card"><h4>Luna Store</h4><p class="muted">Marketplace for apps, games, themes, wallpapers, and widgets.</p><div class="list"><div class="list-item">Featured: Nebula Notes</div><div class="list-item">Featured: Orbit Wallpapers</div><div class="list-item">Featured: Creator Widgets</div></div></div><div class="card"><h4>Store features</h4><div class="tag-list"><span>Ratings</span><span>Reviews</span><span>Auto Updates</span><span>Developer Pages</span><span>Community Picks</span></div></div></div>`;
+  if(id==='ai') return `<div class="card"><h4>Luna AI</h4><p class="muted">AI chat, writing assistance, coding help, troubleshooting, image generation, wallpaper creation, and natural-language file search in one futuristic assistant.</p><div class="two-col"><div class="card"><strong>Creative</strong><p class="muted">Wallpapers, profiles, and writing support.</p></div><div class="card"><strong>Productivity</strong><p class="muted">Learning help, system guidance, and coding assistance.</p></div></div></div>`;
+  if(id==='community') return `<div class="card-grid"><div class="card"><h4>Lunara Community</h4><p class="muted">Profiles, posts, comments, groups, screenshots, recommendations, announcements, themes, and wallpaper sharing.</p><div class="tag-list"><span>Gaming</span><span>LunaraCraft</span><span>LunarBlox</span><span>Themes</span><span>Suggestions</span><span>Development</span></div></div><div class="card"><h4>Highlights</h4><div class="list"><div class="list-item">Featured setup of the week</div><div class="list-item">Creator spotlight</div><div class="list-item">Community screenshots</div></div></div></div>`;
+  if(id==='chat') return `<div class="two-col"><div class="card"><h4>Luna Chat</h4><div class="list"><div class="list-item">Friends list</div><div class="list-item">Private messages</div><div class="list-item">Group chats</div><div class="list-item">File sharing</div></div></div><div class="card"><h4>Future layer</h4><p class="muted">Voice chat, status messages, and custom profile presence can plug into the same design system later.</p></div></div>`;
+  if(id==='craft') return `<div class="card"><h4>LunaraCraft</h4><p class="muted">Official Minecraft launcher for Java, Bedrock, snapshots, older versions, Fabric, Forge, NeoForge, and Quilt.</p><div class="tag-list"><span>Version Manager</span><span>RAM Allocation</span><span>Mod Manager</span><span>Resource Packs</span><span>Shaders</span><span>World Backups</span><span>Blob Skins 3D Preview</span></div><div class="progress" style="margin-top:14px"><div class="bar" style="width:72%"></div></div></div>`;
+  if(id==='blox') return `<div class="card-grid"><div class="card"><h4>LunarBl🌙x</h4><p class="muted">Space-themed Roblox launcher with account switching, avatar tools, featured games, reviews, and community picks.</p><div class="list"><div class="list-item">Launch Roblox + Studio</div><div class="list-item">Avatar presets and saved outfits</div><div class="list-item">Trending and indie spotlight</div></div></div><div class="card"><h4>Branding</h4><p class="muted">The crescent-moon “o” anchors the LunarBlox identity with glass panels, stars, and floating planetary motion.</p></div></div>`;
+  if(id==='gaming') return `<div class="two-col"><div class="card"><h4>Gaming Hub</h4><div class="list"><div class="list-item">Game launcher</div><div class="list-item">FPS counter</div><div class="list-item">Performance Mode</div><div class="list-item">Controller support</div></div></div><div class="card"><h4>Creator tools</h4><div class="list"><div class="list-item">Screen recorder</div><div class="list-item">Luna Stream Mode</div><div class="list-item">Privacy shield</div><div class="list-item">Quick overlays</div></div></div></div>`;
+  if(id==='themes') return `<div class="card"><h4>Luna Theme Studio</h4><p class="muted">Build and share themes, icons, wallpapers, sounds, and widgets with the Lunara community.</p><div class="tag-list"><span>Themes</span><span>Icons</span><span>Sounds</span><span>Animated Wallpapers</span><span>Widget Packs</span></div></div>`;
+  return `<div class="card"><p class="muted">Coming soon</p></div>`;
+}
+function windowFrame(app){ return `<div class="titlebar"><div class="title-left"><button class="dot close" data-close></button><button class="dot minimize" data-min></button><button class="dot maximize" data-max></button><strong>${app.name}</strong></div><div class="pill">${state.space} Space</div></div><div class="window-body">${appContent(app.id)}</div>`; }
+function bring(win){ state.z += 1; win.style.zIndex = state.z; }
+function openApp(id){ const app = APPS.find(a=>a.id===id); if(!app) return; if(state.windows.has(id)){ const existing = state.windows.get(id); existing.classList.remove('min'); bring(existing); return; } const win = document.createElement('div'); win.className='window'; win.dataset.id=id; win.innerHTML = windowFrame(app); const [x,y] = pos[id]||[100,100]; win.style.left=x+'px'; win.style.top=y+'px'; bring(win); workspace.appendChild(win); state.windows.set(id,win); bindWindow(win); renderDock(); }
+function bindWindow(win){ bring(win); const bar = win.querySelector('.titlebar'); let dragging=false,startX=0,startY=0,left=0,top=0; bar.addEventListener('pointerdown',e=>{ if(win.classList.contains('max')) return; dragging=true; bring(win); startX=e.clientX; startY=e.clientY; left=win.offsetLeft; top=win.offsetTop; bar.setPointerCapture(e.pointerId); }); bar.addEventListener('pointermove',e=>{ if(!dragging) return; win.style.left = Math.max(8,left + e.clientX - startX) + 'px'; win.style.top = Math.max(8,top + e.clientY - startY) + 'px'; }); ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>bar.addEventListener(ev,()=>dragging=false)); win.addEventListener('mousedown',()=>bring(win)); win.querySelector('[data-close]').addEventListener('click',()=>{ state.windows.delete(win.dataset.id); win.remove(); renderDock(); }); win.querySelector('[data-min]').addEventListener('click',()=>{ win.classList.add('min'); renderDock(); }); win.querySelector('[data-max]').addEventListener('click',()=>{ win.classList.toggle('max'); bring(win); }); }
+function renderDock(){ dock.innerHTML=''; APPS.slice(0,7).forEach(app=>{ const btn = document.createElement('button'); btn.className='dock-app'; if(state.windows.has(app.id) && !state.windows.get(app.id).classList.contains('min')) btn.classList.add('active'); btn.textContent=app.icon; btn.title=app.name; btn.addEventListener('click',()=>openApp(app.id)); dock.appendChild(btn); }); }
+function renderMenus(filter=''){ const list = APPS.filter(a=>a.name.toLowerCase().includes(filter.toLowerCase()) || a.id.includes(filter.toLowerCase())); appGrid.innerHTML=''; list.forEach(app=>{ const btn = document.createElement('button'); btn.className='app-btn'; btn.innerHTML=`<div style="font-size:24px">${app.icon}</div><b>${app.name}</b><span class="mini">Open app</span>`; btn.addEventListener('click',()=>{ openApp(app.id); $('#startMenu').classList.add('hidden'); }); appGrid.appendChild(btn); }); desktopIcons.innerHTML=''; APPS.slice(0,6).forEach(app=>{ const btn = document.createElement('button'); btn.className='desk-app'; btn.innerHTML=`<span class="icon">${app.icon}</span><span>${app.name}</span>`; btn.addEventListener('click',()=>openApp(app.id)); desktopIcons.appendChild(btn); }); }
+renderMenus(); renderDock();
+$('#appSearch').addEventListener('input',e=>renderMenus(e.target.value));
+$('#startBtn').addEventListener('click',()=>$('#startMenu').classList.toggle('hidden'));
+$('#panelBtn').addEventListener('click',()=>$('#quickPanel').classList.toggle('hidden'));
+$('#notifyBtn').addEventListener('click',()=>alert('Notifications center concept: developer announcements, community updates, messages, and launcher status.'));
+document.addEventListener('click',e=>{ if(!$('#startMenu').contains(e.target) && !$('#startBtn').contains(e.target)) $('#startMenu').classList.add('hidden'); if(!$('#quickPanel').contains(e.target) && !$('#panelBtn').contains(e.target)) $('#quickPanel').classList.add('hidden'); });
+['files','browser','settings'].forEach(openApp);
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
